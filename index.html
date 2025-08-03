@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <title>MacBook Väljare</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      min-height: 100vh;
+      margin: 0;
+      font-family: 'Inter', Arial, sans-serif;
+      background: linear-gradient(135deg, #f8fafc 0%, #dbeafe 100%);
+      color: #222f3e;
+    }
+    header {
+      text-align: center;
+      padding: 2rem 1rem 1rem 1rem;
+    }
+    h1 {
+      font-size: 2.3rem;
+      color: #4f8cff;
+      margin-bottom: .4rem;
+      font-weight: 800;
+    }
+    form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.2rem;
+      justify-content: center;
+      background: #f4f9ff;
+      padding: 1.2rem 2rem 1rem 2rem;
+      border-radius: 2rem;
+      margin: 0 auto 2.5rem auto;
+      max-width: 1100px;
+      box-shadow: 0 4px 24px 0 rgba(79,140,255,0.10);
+    }
+    label {
+      display: flex;
+      flex-direction: column;
+      font-size: 1.07rem;
+      color: #4f8cff;
+      min-width: 145px;
+      font-weight: 600;
+      gap: .35rem;
+    }
+    select {
+      padding: 0.8rem 1rem;
+      font-size: 1.07rem;
+      border-radius: 11px;
+      border: 1.5px solid #d0defa;
+      background: #e3eefd;
+      color: #222f3e;
+      outline: none;
+      font-weight: 500;
+      box-shadow: 0 2px 8px rgba(79,140,255,0.07);
+    }
+    select:focus {
+      border: 2px solid #4f8cff;
+      background: #dde7f6;
+    }
+    #results {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 2.2rem;
+      padding: 0 2vw;
+      max-width: 1400px;
+      margin: 0 auto 4rem auto;
+    }
+    .macbook-card {
+      background: #eef3fa;
+      border-radius: 20px;
+      box-shadow: 0 4px 24px 0 rgba(79,140,255,0.10);
+      padding: 2rem 1.3rem 1.2rem 1.3rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.15s, box-shadow 0.15s;
+      min-height: 210px;
+      border: 2.5px solid #e3eefd;
+    }
+    .macbook-card:hover {
+      box-shadow: 0 8px 40px 0 rgba(79,140,255,0.14), 0 2px 8px 0 rgba(0,0,0,0.08);
+      transform: translateY(-3px) scale(1.018);
+      border-color: #4f8cff;
+    }
+    .macbook-card h2 {
+      font-size: 1.15rem;
+      margin: 0.2rem 0 0.18rem 0;
+      font-weight: 700;
+      color: #4f8cff;
+    }
+    .macbook-card p {
+      margin: .13rem 0;
+      color: #334155;
+      font-size: 1.04rem;
+      font-weight: 500;
+    }
+    .macbook-card .price {
+      margin: .6rem 0 .2rem 0;
+      font-size: 1.08rem;
+      color: #ffb347;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+    .macbook-links {
+      margin-top: .5rem;
+      font-size: .97rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7em 1.4em;
+      justify-content: center;
+    }
+    .macbook-links a {
+      color: #fff;
+      background: #4f8cff;
+      text-decoration: none;
+      padding: .44rem 1rem;
+      border-radius: 8px;
+      font-weight: 700;
+      box-shadow: 0 2px 10px rgba(79,140,255,.08);
+      transition: background 0.16s, color 0.16s;
+      border: none;
+      outline: none;
+      display: inline-block;
+    }
+    .macbook-links a:hover {
+      background: #ffb347;
+      color: #222f3e;
+    }
+    .no-results {
+      text-align: center;
+      width: 100%;
+      font-size: 1.17rem;
+      color: #e06d6d;
+      margin-top: 2rem;
+      grid-column: 1/-1;
+    }
+    @media (max-width: 900px) {
+      #results {
+        grid-template-columns: 1fr;
+      }
+      form {
+        flex-direction: column;
+        align-items: stretch;
+        max-width: unset;
+      }
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css?family=Inter:400,500,600,700,800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <h1>MacBook Väljare</h1>
+    <p>Välj dina önskade specifikationer och hitta rätt MacBook (Air & Pro, M1–M4 Max/Pro) – med länkar till Apple, Prisjakt, Power, NetOnNet, Elgiganten.</p>
+  </header>
+  <form id="filterForm">
+    <label>Chip
+      <select id="cpu">
+        <option value="">Alla</option>
+        <option value="M1">M1</option>
+        <option value="M1 Pro">M1 Pro</option>
+        <option value="M1 Max">M1 Max</option>
+        <option value="M2">M2</option>
+        <option value="M2 Pro">M2 Pro</option>
+        <option value="M2 Max">M2 Max</option>
+        <option value="M3">M3</option>
+        <option value="M3 Pro">M3 Pro</option>
+        <option value="M3 Max">M3 Max</option>
+        <option value="M4">M4</option>
+        <option value="M4 Pro">M4 Pro</option>
+        <option value="M4 Max">M4 Max</option>
+      </select>
+    </label>
+    <label>RAM
+      <select id="ram">
+        <option value="">Alla</option>
+        <option value="8">8 GB</option>
+        <option value="16">16 GB</option>
+        <option value="18">18 GB</option>
+        <option value="24">24 GB</option>
+        <option value="32">32 GB</option>
+        <option value="36">36 GB</option>
+        <option value="48">48 GB</option>
+        <option value="64">64 GB</option>
+        <option value="96">96 GB</option>
+      </select>
+    </label>
+    <label>Disk
+      <select id="disk">
+        <option value="">Alla</option>
+        <option value="256">256 GB</option>
+        <option value="512">512 GB</option>
+        <option value="1024">1 TB</option>
+        <option value="2048">2 TB</option>
+        <option value="4096">4 TB</option>
+        <option value="8192">8 TB</option>
+      </select>
+    </label>
+    <label>Skärmstorlek
+      <select id="size">
+        <option value="">Alla</option>
+        <option value="13">13"</option>
+        <option value="14">14"</option>
+        <option value="15">15"</option>
+        <option value="16">16"</option>
+      </select>
+    </label>
+  </form>
+  <div id="results"></div>
+  <script>
+    // Lista över återförsäljar-länkar (du kan lägga till/uppdatera!)
+    function buildLinks(model, cpu, ram, disk, size) {
+      const searchName = encodeURIComponent(`macbook ${model} ${size} ${cpu} ${ram}gb ${disk >= 1024 ? (disk/1024)+'tb':' '+disk+'gb'}`);
+      return [
+        {name: "Apple", url: "https://www.apple.com/se/shop/buy-mac"},
+        {name: "Prisjakt", url: `https://www.prisjakt.nu/search?search=${searchName}`},
+        {name: "Power", url: `https://www.power.se/sok?q=${searchName}`},
+        {name: "NetOnNet", url: `https://www.netonnet.se/Search?query=${searchName}`},
+        {name: "Elgiganten", url: `https://www.elgiganten.se/search?SearchTerm=${searchName}`}
+      ];
+    }
+
+    // Alla realistiska konfigurationer MacBook Air/Pro M1-M4 Max/Pro
+    // (Priser är ungefärliga riktpriser i SEK)
+    const models = [
+      // M1 Air/Pro
+      {
+        name: "Air", cpu: "M1", size: 13, ram: [8,16], disk: [256,512,1024,2048], basePrice: 11995
+      },
+      {
+        name: "Pro", cpu: "M1", size: 13, ram: [8,16], disk: [256,512,1024,2048], basePrice: 14995
+      },
+      // M1 Pro/Max
+      {
+        name: "Pro", cpu: "M1 Pro", size: 14, ram: [16,32], disk: [512,1024,2048,4096,8192], basePrice: 23995
+      },
+      {
+        name: "Pro", cpu: "M1 Pro", size: 16, ram: [16,32], disk: [512,1024,2048,4096,8192], basePrice: 29995
+      },
+      {
+        name: "Pro", cpu: "M1 Max", size: 14, ram: [32,64], disk: [512,1024,2048,4096,8192], basePrice: 34995
+      },
+      {
+        name: "Pro", cpu: "M1 Max", size: 16, ram: [32,64], disk: [512,1024,2048,4096,8192], basePrice: 41995
+      },
+      // M2 Air/Pro
+      {
+        name: "Air", cpu: "M2", size: 13, ram: [8,16,24], disk: [256,512,1024,2048], basePrice: 14995
+      },
+      {
+        name: "Air", cpu: "M2", size: 15, ram: [8,16,24], disk: [256,512,1024,2048], basePrice: 17995
+      },
+      {
+        name: "Pro", cpu: "M2", size: 13, ram: [8,16,24], disk: [256,512,1024,2048], basePrice: 16595
+      },
+      // M2 Pro/Max
+      {
+        name: "Pro", cpu: "M2 Pro", size: 14, ram: [16,32], disk: [512,1024,2048,4096,8192], basePrice: 24995
+      },
+      {
+        name: "Pro", cpu: "M2 Pro", size: 16, ram: [16,32], disk: [512,1024,2048,4096,8192], basePrice: 31995
+      },
+      {
+        name: "Pro", cpu: "M2 Max", size: 14, ram: [32,64,96], disk: [1024,2048,4096,8192], basePrice: 34995
+      },
+      {
+        name: "Pro", cpu: "M2 Max", size: 16, ram: [32,64,96], disk: [1024,2048,4096,8192], basePrice: 41995
+      },
+      // M3 Air/Pro
+      {
+        name: "Air", cpu: "M3", size: 13, ram: [8,16,24], disk: [256,512,1024,2048], basePrice: 15495
+      },
+      {
+        name: "Air", cpu: "M3", size: 15, ram: [8,16,24], disk: [256,512,1024,2048], basePrice: 18495
+      },
+      {
+        name: "Pro", cpu: "M3", size: 14, ram: [8,16,24], disk: [512,1024,2048,4096], basePrice: 22995
+      },
+      // M3 Pro/Max
+      {
+        name: "Pro", cpu: "M3 Pro", size: 14, ram: [18,36], disk: [512,1024,2048,4096,8192], basePrice: 29995
+      },
+      {
+        name: "Pro", cpu: "M3 Pro", size: 16, ram: [18,36], disk: [512,1024,2048,4096,8192], basePrice: 33995
+      },
+      {
+        name: "Pro", cpu: "M3 Max", size: 14, ram: [36,48,64,96], disk: [1024,2048,4096,8192], basePrice: 45995
+      },
+      {
+        name: "Pro", cpu: "M3 Max", size: 16, ram: [36,48,64,96], disk: [1024,2048,4096,8192], basePrice: 50995
+      },
+      // M4 Pro/Max (exempel, du kan ändra när riktiga specs/priser är spikade)
+      {
+        name: "Pro", cpu: "M4", size: 13, ram: [8,16,24], disk: [256,512,1024,2048], basePrice: 19995
+      },
+      {
+        name: "Pro", cpu: "M4 Pro", size: 14, ram: [18,36,48], disk: [512,1024,2048,4096,8192], basePrice: 31995
+      },
+      {
+        name: "Pro", cpu: "M4 Pro", size: 16, ram: [18,36,48], disk: [512,1024,2048,4096,8192], basePrice: 38995
+      },
+      {
+        name: "Pro", cpu: "M4 Max", size: 14, ram: [48,64,96], disk: [1024,2048,4096,8192], basePrice: 59995
+      },
+      {
+        name: "Pro", cpu: "M4 Max", size: 16, ram: [48,64,96], disk: [1024,2048,4096,8192], basePrice: 64995
+      }
+    ];
+
+    // Skapa alla konfigar
+    function generateLaptops() {
+      const laptops = [];
+      models.forEach(m => {
+        m.ram.forEach(ram => {
+          m.disk.forEach(disk => {
+            laptops.push({
+              model: `MacBook ${m.name} ${m.size}" ${m.cpu}`,
+              cpu: m.cpu,
+              ram,
+              disk,
+              size: m.size,
+              price: estimatePrice(m.basePrice, ram, disk, m.ram[0], m.disk[0]),
+              buy_links: buildLinks(m.name, m.cpu, ram, disk, m.size)
+            });
+          });
+        });
+      });
+      return laptops;
+    }
+    // Enkel prisuppskattning: +900kr/8GB, +1200kr/512GB från bas
+    function estimatePrice(base, ram, disk, baseRam, baseDisk) {
+      let price = base;
+      price += ((ram - baseRam) / 8) * 900;
+      price += ((disk - baseDisk) / 512) * 1200;
+      return Math.round(price / 10) * 10;
+    }
+
+    const laptops = generateLaptops();
+
+    const form = document.getElementById('filterForm');
+    const results = document.getElementById('results');
+
+    form.addEventListener('change', filter);
+
+    function filter() {
+      const cpu = document.getElementById('cpu').value;
+      const ram = document.getElementById('ram').value;
+      const disk = document.getElementById('disk').value;
+      const size = document.getElementById('size').value;
+
+      const filtered = laptops.filter(l =>
+        (!cpu || l.cpu === cpu) &&
+        (!ram || l.ram == ram) &&
+        (!disk || l.disk == disk) &&
+        (!size || l.size == size)
+      );
+
+      results.innerHTML = filtered.length > 0
+        ? filtered.map(l => `
+        <div class="macbook-card">
+          <h2>${l.model}</h2>
+          <p><b>Chip:</b> ${l.cpu}</p>
+          <p><b>RAM:</b> ${l.ram} GB</p>
+          <p><b>Disk:</b> ${l.disk >= 1024 ? (l.disk / 1024) + ' TB' : l.disk + ' GB'}</p>
+          <p><b>Skärm:</b> ${l.size}"</p>
+          <div class="price">ca ${l.price.toLocaleString('sv-SE')} kr</div>
+          <div class="macbook-links">
+            ${l.buy_links.map(link => `<a href="${link.url}" target="_blank" rel="noopener">${link.name}</a>`).join('')}
+          </div>
+        </div>
+      `).join('')
+        : `<div class="no-results">Inga modeller matchar dina val.</div>`;
+    }
+
+    filter(); // Visa alla från start
+  </script>
+</body>
+</html>
