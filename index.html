@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <title>MacBook Väljare</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root {
+      --dark-bg: #14212b;
+      --dark-card: #1c2b37;
+      --accent: #4f8cff;
+      --accent2: #2ecea1;
+      --text-main: #f3f7fa;
+      --text-muted: #b7c9d5;
+      --card-border: #27495e;
+      --input-bg: #22303a;
+      --input-border: #35505f;
+      --shadow: 0 4px 24px 0 rgba(79,140,255,0.12);
+      --hero-pattern: repeating-linear-gradient(120deg, #17303d 0 10px, #182d37 10px 20px);
+    }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      font-family: 'Inter', Arial, sans-serif;
+      background: var(--dark-bg);
+      color: var(--text-main);
+      background-image: var(--hero-pattern);
+    }
+    .navbar {
+      background: #13202a;
+      display: flex;
+      align-items: center;
+      padding: 0 3vw 0 1.8vw;
+      height: 74px;
+      border-bottom: 1.5px solid #22303a;
+      justify-content: flex-start;
+      gap: 2.5em;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: .5em;
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: -.5px;
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .logo-icon {
+      width: 36px; height: 36px; border-radius: 11px; background: var(--accent2);
+      display: flex; align-items: center; justify-content: center; color: #fff; font-weight: bold; font-size: 1.32rem;
+    }
+    .navbar-menu {
+      display: flex;
+      gap: 1.2em;
+      font-size: 1.09rem;
+      margin-left: 2em;
+    }
+    .navbar-menu a {
+      color: var(--text-main);
+      text-decoration: none;
+      padding: .5em 1.07em;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: background .13s, color .13s;
+      background: transparent;
+      border: none;
+      outline: none;
+      cursor: pointer;
+    }
+    .navbar-menu a.active,
+    .navbar-menu a:hover {
+      background: var(--accent2);
+      color: #fff;
+    }
+    .hero {
+      background: none;
+      padding: 4vw 0 2vw 0;
+      text-align: left;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    .hero-title {
+      font-size: 2.4rem;
+      font-weight: 800;
+      line-height: 1.13;
+      color: var(--text-main);
+      margin-bottom: .45em;
+      letter-spacing: -.5px;
+    }
+    .hero-accent {
+      color: var(--accent);
+    }
+    .hero-desc {
+      color: var(--text-muted);
+      font-size: 1.15rem;
+      margin-bottom: 2.1em;
+      max-width: 700px;
+    }
+    .hero-btns {
+      display: flex;
+      gap: 1.1em;
+      margin-bottom: 2.1em;
+    }
+    .hero-btn {
+      background: var(--accent);
+      color: #13202a;
+      border: none;
+      font-weight: 700;
+      font-size: 1.08rem;
+      border-radius: 9px;
+      padding: .98em 1.75em;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      transition: background .15s, color .15s;
+      outline: none;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .hero-btn.secondary {
+      background: transparent;
+      color: var(--accent);
+      border: 2px solid var(--accent);
+    }
+    .hero-btn:hover {
+      background: var(--accent2);
+      color: #fff;
+    }
+    form#filterForm {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.2rem;
+      justify-content: center;
+      background: var(--dark-card);
+      padding: 1.2rem 2rem 1rem 2rem;
+      border-radius: 1.6rem;
+      margin: 0 auto 2.5rem auto;
+      max-width: 1100px;
+      box-shadow: var(--shadow);
+      border: 1.7px solid var(--card-border);
+    }
+    label {
+      display: flex;
+      flex-direction: column;
+      font-size: 1.07rem;
+      color: var(--accent2);
+      min-width: 145px;
+      font-weight: 600;
+      gap: .35rem;
+    }
+    select {
+      padding: 0.8rem 1rem;
+      font-size: 1.07rem;
+      border-radius: 11px;
+      border: 1.5px solid var(--input-border);
+      background: var(--input-bg);
+      color: var(--text-main);
+      outline: none;
+      font-weight: 500;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    }
+    select:focus {
+      border: 2px solid var(--accent2);
+      background: #1a2430;
+    }
+    #results {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 2.2rem;
+      padding: 0 2vw;
+      max-width: 1400px;
+      margin: 0 auto 4rem auto;
+    }
+    .macbook-card {
+      background: var(--dark-card);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      padding: 2rem 1.3rem 1.2rem 1.3rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.15s, box-shadow 0.15s, border-color .15s;
+      min-height: 210px;
+      border: 2.5px solid var(--card-border);
+    }
+    .macbook-card:hover {
+      box-shadow: 0 8px 40px 0 rgba(79,140,255,0.19), 0 2px 8px 0 rgba(0,0,0,0.13);
+      transform: translateY(-3px) scale(1.018);
+      border-color: var(--accent2);
+    }
+    .macbook-card h2 {
+      font-size: 1.13rem;
+      margin: 0.2rem 0 0.18rem 0;
+      font-weight: 700;
+      color: var(--accent2);
+    }
+    .macbook-card p {
+      margin: .13rem 0;
+      color: var(--text-muted);
+      font-size: 1.03rem;
+      font-weight: 500;
+    }
+    .macbook-card .price {
+      margin: .6rem 0 .2rem 0;
+      font-size: 1.08rem;
+      color: var(--accent);
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+    .macbook-links {
+      margin-top: .5rem;
+      font-size: .97rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7em 1.4em;
+      justify-content: center;
+    }
+    .macbook-links a {
+      color: #fff;
+      background: var(--accent2);
+      text-decoration: none;
+      padding: .44rem 1rem;
+      border-radius: 8px;
+      font-weight: 700;
+      box-shadow: 0 2px 10px rgba(44,198,162,.08);
+      transition: background 0.16s, color 0.16s;
+      border: none;
+      outline: none;
+      display: inline-block;
+    }
+    .macbook-links a:hover {
+      background: var(--accent);
+      color: #222f3e;
+    }
+    .no-results {
+      text-align: center;
+      width: 100%;
+      font-size: 1.17rem;
+      color: #e06d6d;
+      margin-top: 2rem;
+      grid-column: 1/-1;
+    }
+    /* Refurbished */
+    #refurbished {
+      background: var(--dark-card);
+      border-radius: 18px;
+      margin: 0 auto 3rem auto;
+      max-width: 800px;
+      padding: 2rem 2rem 1.3rem 2rem;
+      box-shadow: var(--shadow);
+      border: 1.7px solid var(--card-border);
+    }
+    #refurbished h2 {
+      font-size: 1.21rem;
+      color: var(--accent2);
+      margin-bottom: .7em;
+      font-weight: 700;
+      letter-spacing: -.3px;
+    }
+    #refurbished ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.2em 2.5em;
+    }
+    #refurbished li {
+      font-size: 1.09rem;
+      margin-bottom: .15em;
+    }
+    #refurbished a {
+      color: var(--accent2);
+      text-decoration: none;
+      font-weight: 600;
+      border-bottom: 1.5px solid var(--accent2);
+      transition: color .15s, border-bottom-color .15s;
+    }
+    #refurbished a:hover {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+    @media (max-width: 900px) {
+      #results {
+        grid-template-columns: 1fr;
+      }
+      form#filterForm {
+        flex-direction: column;
+        align-items: stretch;
+        max-width: unset;
+      }
+      .hero {
+        text-align: left;
+        padding-left: 3vw;
+        padding-right: 3vw;
+      }
+      #refurbished ul { flex-direction: column; gap: .8em; }
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css?family=Inter:400,500,600,700,800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <a href="#" class="logo"><span class="logo-icon"></span> MacBook Väljare</a>
+    <div class="navbar-menu">
+      <a href="#" class="active">Välj MacBook</a>
+      <a href="#refurbished">Refurbished/Begagnade</a>
+    </div>
+  </nav>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-title">
+      Hitta din <span class="hero-accent">perfekta MacBook</span><br>
+      <span style="color:var(--accent2);">Bekvämt, enkelt och smart</span>
+    </div>
+    <div class="hero-desc">
+      Filtrera efter chip, RAM, lagring och skärmstorlek – hitta rätt MacBook för dig och jämför nya och begagnade alternativ.
+    </div>
+    <div class="hero-btns">
+      <a href="#filterForm" class="hero-btn">Hitta MacBook</a>
+      <a href="#refurbished" class="hero-btn secondary">Se begagnat/refurbished</a>
+    </div>
+  </section>
+  <!-- FILTER FORM -->
+  <form id="filterForm">
+    <label>Chip
+      <select id="cpu">
+        <option value="">Alla</option>
+        <option value="M1">M1</option>
+        <option value="M1 Pro">M1 Pro</option>
+        <option value="M1 Max">M1 Max</option>
+        <option value="M2">M2</option>
+        <option value="M2 Pro">M2 Pro</option>
+        <option value="M2 Max">M2 Max</option>
+        <option value="M3">M3</option>
+        <option value="M3 Pro">M3 Pro</option>
+        <option value="M3 Max">M3 Max</option>
+        <option value="M4">M4</option>
+        <option value="M4 Pro">M4 Pro</option>
+        <option value="M4 Max">M4 Max</option>
+      </select>
+    </label>
+    <label>RAM
+      <select id="ram">
+        <option value="">Alla</option>
+        <option value="8">8 GB</option>
+        <option value="16">16 GB</option>
+        <option value="18">18 GB</option>
+        <option value="24">24 GB</option>
+        <option value="32">32 GB</option>
+        <option value="36">36 GB</option>
+        <option value="48">48 GB</option>
+        <option value="64">64 GB</option>
+        <option value="96">96 GB</option>
+      </select>
+    </label>
+    <label>Disk
+      <select id="disk">
+        <option value="">Alla</option>
+        <option value="256">256 GB</option>
+        <option value="512">512 GB</option>
+        <option value="1024">1 TB</option>
+        <option value="2048">2 TB</option>
+        <option value="4096">4 TB</option>
+        <option value="8192">8 TB</option>
+      </select>
+    </label>
+    <label>Skärmstorlek
+      <select id="size">
+        <option value="">Alla</option>
+        <option value="13">13"</option>
+        <option value="14">14"</option>
+        <option value="15">15"</option>
+        <option value="16">16"</option>
+      </select>
+    </label>
+  </form>
+  <!-- RESULTAT -->
+  <div id="results"></div>
+  <!-- REFURBISHED SEKTION -->
+  <section id="refurbished">
+    <h2>Refurbished & Begagnade MacBooks</h2>
+    <ul>
+      <li><a href="https://www.apple.com/se/shop/refurbished/mac" target="_blank">Apple Refurbished Store</a></li>
+      <li><a href="https://www.inrego.se/macbooks" target="_blank">Inrego</a></li>
+      <li><a href="https://www.refurbly.se/collections/macbook" target="_blank">Refurbly</a></li>
+      <li><a href="https://www.mresell.se/macbook" target="_blank">mResell</a></li>
+      <li><a href="https://www.blocket.se/annonser/hela_sverige/datorer_tillbehor/apple/macbook" target="_blank">Blocket</a></li>
+      <li><a href="https://www.tradera.com/category/3444/macbook" target="_blank">Tradera</a></li>
+    </ul>
+  </section>
+  <script>
+    // Prisexempel per modell: prisintervall istället för exakt pris
+    const priceRanges = {
+      "Air_M1_13": "ca 12 000 – 18 000 kr",
+      "Pro_M1_13": "ca 15 000 – 22 000 kr",
+      "Pro_M1 Pro_14": "ca 24 000 – 34 000 kr",
+      "Pro_M1 Pro_16": "ca 30 000 – 39 000 kr",
+      "Pro_M1 Max_14": "ca 35 000 – 44 000 kr",
+      "Pro_M1 Max_16": "ca 42 000 – 52 000 kr",
+      "Air_M2_13": "ca 15 000 – 21 000 kr",
+      "Air_M2_15": "ca 18 000 – 24 000 kr",
+      "Pro_M2_13": "ca 16 000 – 23 000 kr",
+      "Pro_M2 Pro_14": "ca 25 000 – 36 000 kr",
+      "Pro_M2 Pro_16": "ca 32 000 – 41 000 kr",
+      "Pro_M2 Max_14": "ca 35 000 – 50 000 kr",
+      "Pro_M2 Max_16": "ca 42 000 – 58 000 kr",
+      "Air_M3_13": "ca 16 000 – 22 000 kr",
+      "Air_M3_15": "ca 18 500 – 25 000 kr",
+      "Pro_M3_14": "ca 21 000 – 29 000 kr",
+      "Pro_M3 Pro_14": "ca 30 000 – 43 000 kr",
+      "Pro_M3 Pro_16": "ca 34 000 – 48 000 kr",
+      "Pro_M3 Max_14": "ca 45 000 – 59 000 kr",
+      "Pro_M3 Max_16": "ca 50 000 – 65 000 kr",
+      "Pro_M4_13": "ca 20 000 – 26 000 kr",
+      "Pro_M4 Pro_14": "ca 32 000 – 46 000 kr",
+      "Pro_M4 Pro_16": "ca 39 000 – 54 000 kr",
+      "Pro_M4 Max_14": "ca 60 000 – 74 000 kr",
+      "Pro_M4 Max_16": "ca 65 000 – 79 000 kr"
+    };
+
+    function buildLinks(model, cpu, ram, disk, size) {
+      const searchName = encodeURIComponent(`macbook ${model} ${size} ${cpu} ${ram}gb ${disk >= 1024 ? (disk/1024)+'tb':' '+disk+'gb'}`);
+      return [
+        { name: "Apple", url: "https://www.apple.com/se/shop/buy-mac" },
+        { name: "Prisjakt", url: `https://www.prisjakt.nu/search?search=${searchName}` }
+      ];
+    }
+
+    const models = [
+      { name: "Air", cpu: "M1", size: 13, ram: [8,16], disk: [256,512,1024,2048] },
+      { name: "Pro", cpu: "M1", size: 13, ram: [8,16], disk: [256,512,1024,2048] },
+      { name: "Pro", cpu: "M1 Pro", size: 14, ram: [16,32], disk: [512,1024,2048,4096,8192] },
+      { name: "Pro", cpu: "M1 Pro", size: 16, ram: [16,32], disk: [512,1024,2048,4096,8192] },
+      { name: "Pro", cpu: "M1 Max", size: 14, ram: [32,64], disk: [512,1024,2048,4096,8192] },
+      { name: "Pro", cpu: "M1 Max", size: 16, ram: [32,64], disk: [512,1024,2048,4096,8192] },
+      { name: "Air", cpu: "M2", size: 13, ram: [8,16,24], disk: [256,512,1024,2048] },
+      { name: "Air", cpu: "M2", size: 15, ram: [8,16,24], disk: [256,512,1024,2048] },
+      { name: "Pro", cpu: "M2", size: 13, ram: [8,16,24], disk: [256,512,1024,2048] },
+      { name: "Pro", cpu: "M2 Pro", size: 14, ram: [16,32], disk: [512,1024,2048,4096,8192] },
+      { name: "Pro", cpu: "M2 Pro", size: 16, ram: [16,32], disk: [512,1024,2048,4096,8192] },
+      { name: "Pro", cpu: "M2 Max", size: 14, ram: [32,64,96], disk: [1024,2048,4096,8192] },
+      { name: "Pro", cpu: "M2 Max", size: 16, ram: [32,64,96], disk: [1024,2048,4096,8192] },
+      { name: "Air", cpu: "M3", size: 13, ram: [8,16,24], disk: [256,512,1024,2048] },
+      { name: "Air", cpu: "M3", size: 15, ram: [8,16,24], disk: [256,512,1024,2048] },
+      { name: "Pro", cpu: "M3", size: 14, ram: [8,16,24], disk: [512,1024,2048,4096] },
+      { name: "Pro", cpu: "M3 Pro", size: 14, ram: [18,36], disk: [512,1024,2048,4096,8192] },
+      { name: "Pro", cpu: "M3 Pro", size: 16, ram: [18,36], disk: [512,1024,2048,4096,8192] },
+      { name: "Pro", cpu: "M3 Max", size: 14, ram: [36,48,64,96], disk: [1024,2048,4096,8192] },
+      { name: "Pro", cpu: "M3 Max", size: 16, ram: [36,48,64,96], disk: [1024,2048,4096,8192] },
+      { name: "Pro", cpu: "M4", size: 13, ram: [8,16,24], disk: [256,512,1024,2048] },
+      { name: "Pro", cpu: "M4 Pro", size: 14, ram: [18,36,48], disk: [512,1024,2048,4096,8192] },
+      { name: "Pro", cpu: "M4 Pro", size: 16, ram: [18,36,48], disk: [512,1024,2048,4096,8192] },
+      { name: "Pro", cpu: "M4 Max", size: 14, ram: [48,64,96], disk: [1024,2048,4096,8192] },
+      { name: "Pro", cpu: "M4 Max", size: 16, ram: [48,64,96], disk: [1024,2048,4096,8192] }
+    ];
+
+    function generateLaptops() {
+      const laptops = [];
+      models.forEach(m => {
+        m.ram.forEach(ram => {
+          m.disk.forEach(disk => {
+            laptops.push({
+              model: `MacBook ${m.name} ${m.size}" ${m.cpu}`,
+              cpu: m.cpu,
+              ram,
+              disk,
+              size: m.size,
+              priceRange: priceRanges[`${m.name}_${m.cpu}_${m.size}`] || "Se återförsäljare",
+              buy_links: buildLinks(m.name, m.cpu, ram, disk, m.size)
+            });
+          });
+        });
+      });
+      return laptops;
+    }
+
+    const laptops = generateLaptops();
+
+    const form = document.getElementById('filterForm');
+    const results = document.getElementById('results');
+
+    form.addEventListener('change', filter);
+
+    function filter() {
+      const cpu = document.getElementById('cpu').value;
+      const ram = document.getElementById('ram').value;
+      const disk = document.getElementById('disk').value;
+      const size = document.getElementById('size').value;
+
+      const filtered = laptops.filter(l =>
+        (!cpu || l.cpu === cpu) &&
+        (!ram || l.ram == ram) &&
+        (!disk || l.disk == disk) &&
+        (!size || l.size == size)
+      );
+
+      results.innerHTML = filtered.length > 0
+        ? filtered.map(l => `
+        <div class="macbook-card">
+          <h2>${l.model}</h2>
+          <p><b>Chip:</b> ${l.cpu}</p>
+          <p><b>RAM:</b> ${l.ram} GB</p>
+          <p><b>Disk:</b> ${l.disk >= 1024 ? (l.disk / 1024) + ' TB' : l.disk + ' GB'}</p>
+          <p><b>Skärm:</b> ${l.size}"</p>
+          <div class="price">${l.priceRange}</div>
+          <div class="macbook-links">
+            ${l.buy_links.map(link => `<a href="${link.url}" target="_blank" rel="noopener">${link.name}</a>`).join('')}
+          </div>
+        </div>
+      `).join('')
+        : `<div class="no-results">Inga modeller matchar dina val.</div>`;
+    }
+
+    filter(); // Visa alla från start
+  </script>
+</body>
+</html>
